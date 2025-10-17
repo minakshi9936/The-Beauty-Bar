@@ -8,11 +8,33 @@ import { useAuth } from '@/contexts/AuthContext';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Dummy Data
-const slidesData = [
-  { id: 1, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760689037/Orange_Black_Minimalist_Promotion_Hair_Salon_Instagram_Post_snl7c2.png', title: 'Luxury Haircuts' },
-  { id: 2, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760689409/Purple_Gradient_Facial_Instagram_Post_fp1f5c.png', title: 'Facial Treatments' },
-  { id: 3, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760690196/Pink_and_White_Elegant_Nail_Art_Salon_Promotion_Instagram_Post_belkjc.png', title: 'Nails' },
+const slidesData: SliderImage[] = [
+  {
+    id: 1,
+    image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760689037/Orange_Black_Minimalist_Promotion_Hair_Salon_Instagram_Post_snl7c2.png',
+    title: 'Luxury Haircuts',
+    order_index: 1,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760689409/Purple_Gradient_Facial_Instagram_Post_fp1f5c.png',
+    title: 'Facial Treatments',
+    order_index: 2,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 3,
+    image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760690196/Pink_and_White_Elegant_Nail_Art_Salon_Promotion_Instagram_Post_belkjc.png',
+    title: 'Nails',
+    order_index: 3,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
 ];
+
 
 const categoriesData = [
   { id: 1, name: 'Men', image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPQPcCiwI-zg16kt4PSI-UQT3wAq1vl1z5Ng&s' },
