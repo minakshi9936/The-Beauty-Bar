@@ -21,8 +21,17 @@ type SliderImage = { id: string; image_url: string; title?: string; order_index:
 type GalleryImage = { id: string; image_url: string; order_index: number };
 
 export default function AdminDashboard() {
-  const { user: profile, loading } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
+
+  // Redirect non-admins
+  useEffect(() => {
+    if (user && user.role !== 'admin') {
+      router.push('/');
+    }
+  }, [user, router]);
+
+  if (!user || user.role !== 'admin') return null;
 
   // ------------------------ Dummy Data ------------------------
   const [categories, setCategories] = useState<Category[]>([
@@ -74,15 +83,6 @@ export default function AdminDashboard() {
   const [galleryImageUrl, setGalleryImageUrl] = useState('');
   const [galleryOrderIndex, setGalleryOrderIndex] = useState('');
 
-  // ------------------------ Auth Check ------------------------
-  useEffect(() => {
-    if (!loading && (!profile || profile.role !== 'admin')) {
-      router.push('/');
-    }
-  }, [profile, loading, router]);
-
-  if (!profile || profile.role !== 'admin') return null;
-
   // ======================== Handlers ========================
 
   // ------------------------ Services ------------------------
@@ -109,20 +109,17 @@ export default function AdminDashboard() {
   const handleSaveService = () => {
     if (editingService) {
       setServices((prev) =>
-        prev.map((s) => (s.id === editingService.id ? { ...s, name: serviceName, description: serviceDescription, price: parseFloat(servicePrice), image_url: serviceImageUrl, category_id: serviceCategoryId } : s))
+        prev.map((s) =>
+          s.id === editingService.id
+            ? { ...s, name: serviceName, description: serviceDescription, price: parseFloat(servicePrice), image_url: serviceImageUrl, category_id: serviceCategoryId }
+            : s
+        )
       );
       toast.success('Service updated successfully');
     } else {
       setServices((prev) => [
         ...prev,
-        {
-          id: (prev.length + 1).toString(),
-          name: serviceName,
-          description: serviceDescription,
-          price: parseFloat(servicePrice),
-          image_url: serviceImageUrl,
-          category_id: serviceCategoryId,
-        },
+        { id: (prev.length + 1).toString(), name: serviceName, description: serviceDescription, price: parseFloat(servicePrice), image_url: serviceImageUrl, category_id: serviceCategoryId },
       ]);
       toast.success('Service added successfully');
     }
@@ -159,20 +156,17 @@ export default function AdminDashboard() {
   const handleSaveProduct = () => {
     if (editingProduct) {
       setProducts((prev) =>
-        prev.map((p) => (p.id === editingProduct.id ? { ...p, name: productName, description: productDescription, price: parseFloat(productPrice), image_url: productImageUrl, category_id: productCategoryId } : p))
+        prev.map((p) =>
+          p.id === editingProduct.id
+            ? { ...p, name: productName, description: productDescription, price: parseFloat(productPrice), image_url: productImageUrl, category_id: productCategoryId }
+            : p
+        )
       );
       toast.success('Product updated successfully');
     } else {
       setProducts((prev) => [
         ...prev,
-        {
-          id: (prev.length + 1).toString(),
-          name: productName,
-          description: productDescription,
-          price: parseFloat(productPrice),
-          image_url: productImageUrl,
-          category_id: productCategoryId,
-        },
+        { id: (prev.length + 1).toString(), name: productName, description: productDescription, price: parseFloat(productPrice), image_url: productImageUrl, category_id: productCategoryId },
       ]);
       toast.success('Product added successfully');
     }
@@ -211,12 +205,7 @@ export default function AdminDashboard() {
     } else {
       setSliderImages((prev) => [
         ...prev,
-        {
-          id: (prev.length + 1).toString(),
-          image_url: sliderImageUrl,
-          title: sliderTitle,
-          order_index: parseInt(sliderOrderIndex),
-        },
+        { id: (prev.length + 1).toString(), image_url: sliderImageUrl, title: sliderTitle, order_index: parseInt(sliderOrderIndex) },
       ]);
       toast.success('Slider added successfully');
     }
@@ -253,11 +242,7 @@ export default function AdminDashboard() {
     } else {
       setGalleryImages((prev) => [
         ...prev,
-        {
-          id: (prev.length + 1).toString(),
-          image_url: galleryImageUrl,
-          order_index: parseInt(galleryOrderIndex),
-        },
+        { id: (prev.length + 1).toString(), image_url: galleryImageUrl, order_index: parseInt(galleryOrderIndex) },
       ]);
       toast.success('Gallery image added successfully');
     }
@@ -425,7 +410,7 @@ export default function AdminDashboard() {
         </Tabs>
       </div>
 
-      {/* ------------------- Dialogs ------------------- */}
+      {/* ------------------- Service Dialog ------------------- */}
       <Dialog open={showServiceDialog} onOpenChange={setShowServiceDialog}>
         <DialogContent>
           <DialogHeader>
@@ -457,6 +442,8 @@ export default function AdminDashboard() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* You can replicate similar Dialogs for Products, Sliders, Gallery if needed */}
     </div>
   );
 }
