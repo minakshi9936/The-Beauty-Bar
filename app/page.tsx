@@ -7,6 +7,16 @@ import { useAuth } from '@/contexts/AuthContext';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+// Type Definition
+type SliderImage = {
+  id: number;
+  image_url: string;
+  title: string;
+  order_index: number;
+  is_active: boolean;
+  created_at: string;
+};
+
 // Dummy Data
 const slidesData: SliderImage[] = [
   {
