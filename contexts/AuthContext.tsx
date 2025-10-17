@@ -4,10 +4,10 @@ import { createContext, useContext, ReactNode } from 'react';
 type UserType = { name: string; email: string; role: 'admin' | 'user' };
 
 type AuthContextType = {
-  user: UserType;
-  login: () => true;
+  user: UserType | null;
+  login: (email: string, password: string) => boolean;
   logout: () => void;
-  signup: () => void;
+  signup: (name: string, email: string, password: string) => void;
 };
 
 // 🔹 Always return a fake user (Awantika)
@@ -24,9 +24,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user: fakeUser,
-        login: () => true,
+        login: (email: string, password: string) => true,
         logout: () => {},   // Does nothing
-        signup: () => {},   // Does nothing
+        signup: (name: string, email: string, password: string) => {},   // Does nothing
       }}
     >
       {children}
