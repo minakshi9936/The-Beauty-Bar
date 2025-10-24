@@ -91,8 +91,7 @@ export default function CategoryPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div
-        className="relative h-80 bg-cover bg-center"
-        style={{ backgroundImage: `url(${category.image_url})` }}
+        className="relative h-80 animated-gradient"
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
           <h1 className="text-6xl font-bold text-white mb-4">{category.name} Services</h1>

@@ -75,11 +75,7 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div
-        className="relative h-64 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            'url(https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=1920)',
-        }}
+        className="relative h-64 animated-gradient"
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <h1 className="text-5xl font-bold text-white">Our Services</h1>

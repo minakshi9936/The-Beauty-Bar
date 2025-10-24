@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import HeroSlider from '@/components/HeroSlider';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Users, User, User2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // --- Type Definitions ---
@@ -97,8 +97,8 @@ export default function Home() {
   };
 
   const handleWhatsApp = (itemName: string, type: string) => {
-    const phoneNumber = '916391421660'; 
-    const message = `Hello! I’d like to book a ${type}: ${itemName}. Can you share more details?`;
+    const phoneNumber = '916391421660';
+    const message = `Hello! I'd like to book a ${type}: ${itemName}. Can you share more details?`;
     const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
   };
@@ -115,15 +115,22 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold text-black mb-4">Choose Your Category</h2>
           <p className="text-gray-600 mb-12">Select your preferred service category</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          <div className="flex justify-center gap-8 mt-8">
             {categories.map((category) => (
               <Link key={category.id} href={`/category/${category.name.toLowerCase()}`} className="group">
-                <div className="relative overflow-hidden rounded-full aspect-square max-w-xs w-full mx-auto shadow-xl hover:scale-105 transition">
-                  <img src={category.image_url} alt={category.name} className="w-full h-full object-cover" />
+                <div className="flex flex-col items-center">
+                  <motion.div
+                    className="rounded-full w-32 h-32  bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform cursor-pointer hover:bg-pink-200"
+                    whileHover={{ rotate: 10 }}
+                  >
+                    {category.name === 'Men' ? (
+                      <User className="w-14 h-14 text-blue-500" />
+                    ) : (
+                      <User2 className="w-14 h-14 text-pink-500" />
+                    )}
+                  </motion.div>
+                  <span className="mt-2 font-semibold text-gray-800">{category.name}</span>
                 </div>
-                <h3 className="mt-4 text-3xl font-semibold text-black group-hover:text-pink-600 transition-colors">
-                  {category.name}
-                </h3>
               </Link>
             ))}
           </div>
