@@ -2,10 +2,53 @@
 
 import { useEffect, useState } from 'react';
 import { supabase, GalleryImage } from '@/lib/supabase';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Animated Count Component
+const CountUp = ({ end }: { end: number }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let start = 0;
+    const duration = 1500; // 1.5s
+    const increment = end / (duration / 30);
+
+    const counter = setInterval(() => {
+      start += increment;
+      if (start >= end) {
+        setCount(end);
+        clearInterval(counter);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 30);
+
+    return () => clearInterval(counter);
+  }, [end]);
+
+  return <span className="text-4xl font-bold text-pink-600 mb-2">{count}+</span>;
+};
+
+// Sparkles Component
+const Sparkles = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {[...Array(8)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="w-2 h-2 bg-white rounded-full"
+        initial={{ opacity: 0, x: Math.random() * 100 - 50, y: Math.random() * 100 - 50 }}
+        animate={{ opacity: [0, 1, 0], x: Math.random() * 100 - 50, y: Math.random() * 100 - 50 }}
+        transition={{ repeat: Infinity, duration: 2 + Math.random() * 2, delay: Math.random() }}
+      />
+    ))}
+  </div>
+);
 
 export default function AboutPage() {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   useEffect(() => {
     fetchGalleryImages();
@@ -28,8 +71,18 @@ export default function AboutPage() {
     container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
 
+  const openModal = (index: number) => {
+    setSelectedIndex(index);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => setModalOpen(false);
+  const prevImage = () => setSelectedIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+  const nextImage = () => setSelectedIndex((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1));
+
   return (
     <div className="min-h-screen bg-white">
+      {/* Hero Section */}
       <div
         className="relative h-64 bg-cover bg-center"
         style={{
@@ -42,6 +95,7 @@ export default function AboutPage() {
         </div>
       </div>
 
+      {/* About Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           <div className="order-2 lg:order-1">
@@ -51,86 +105,50 @@ export default function AboutPage() {
               className="rounded-lg shadow-2xl w-full h-[500px] object-cover"
             />
           </div>
-
           <div className="order-1 lg:order-2">
-            <h2 className="text-4xl font-bold text-black mb-6">
-              Welcome to The Beauty Bar
-            </h2>
+            <h2 className="text-4xl font-bold text-black mb-6">Welcome to The Beauty Bar</h2>
             <div className="space-y-4 text-gray-700 leading-relaxed">
-              <p>
-                The Beauty Bar is your premier destination for luxury beauty and grooming services.
-                Since our establishment, we have been committed to providing exceptional service
-                and creating unforgettable experiences for our clients.
-              </p>
-              <p>
-                Our team of highly skilled and experienced professionals are dedicated to helping
-                you look and feel your absolute best. We use only the finest products and the
-                latest techniques to ensure outstanding results every time.
-              </p>
-              <p>
-                Whether you're looking for a fresh haircut, a rejuvenating facial, professional
-                styling, or a complete makeover, we offer a comprehensive range of services
-                tailored to meet your unique needs.
-              </p>
-              <p>
-                At The Beauty Bar, we believe that beauty is not just about appearance, but about
-                confidence, self-expression, and feeling great in your own skin. Our welcoming
-                atmosphere and personalized approach ensure that every visit is a special
-                experience.
-              </p>
+              <p>The Beauty Bar is your premier destination for luxury beauty and grooming services...</p>
+              <p>Our team of highly skilled and experienced professionals are dedicated to helping you look and feel your absolute best...</p>
+              <p>Whether you're looking for a fresh haircut, a rejuvenating facial, professional styling, or a complete makeover...</p>
+              <p>At The Beauty Bar, we believe that beauty is not just about appearance, but about confidence...</p>
             </div>
 
+            {/* Animated Stats with Sparkles */}
             <div className="grid grid-cols-3 gap-6 mt-8">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-pink-600 mb-2">500+</div>
-                <div className="text-gray-600 text-sm">Happy Clients</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-pink-600 mb-2">10+</div>
-                <div className="text-gray-600 text-sm">Expert Stylists</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-pink-600 mb-2">5+</div>
-                <div className="text-gray-600 text-sm">Years Experience</div>
-              </div>
+              {[{ end: 500, label: 'Happy Clients' }, { end: 10, label: 'Expert Stylists' }, { end: 5, label: 'Years Experience' }].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  className="text-center relative flex flex-col items-center justify-center p-4 rounded-xl bg-pink-50 overflow-hidden"
+                >
+                  <CountUp end={item.end} />
+                  <div className="text-gray-600 text-sm">{item.label}</div>
+                  <Sparkles />
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="py-12 bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        {/* Gallery Section */}
+        <div className="py-12 bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-4xl font-bold text-black mb-2">Our Gallery</h2>
-                <p className="text-gray-600">See our work and beautiful salon space</p>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => scrollGallery('left')}
-                  className="p-2 rounded-full bg-white hover:bg-pink-50 border border-gray-200 transition-colors"
-                  aria-label="Scroll left"
-                >
-                  <ChevronLeft className="h-6 w-6 text-gray-700" />
-                </button>
-                <button
-                  onClick={() => scrollGallery('right')}
-                  className="p-2 rounded-full bg-white hover:bg-pink-50 border border-gray-200 transition-colors"
-                  aria-label="Scroll right"
-                >
-                  <ChevronRight className="h-6 w-6 text-gray-700" />
-                </button>
-              </div>
-            </div>
+            <h2 className="text-4xl font-bold text-black mb-2">Our Gallery</h2>
+            <p className="text-gray-600 mb-6">See our work and beautiful salon space</p>
 
             <div
               id="gallery-container"
-              className="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide"
+              className="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide relative group"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {galleryImages.map((image) => (
+              {galleryImages.map((image, index) => (
                 <div
                   key={image.id}
-                  className="flex-shrink-0 w-80 h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  onClick={() => openModal(index)}
+                  className="flex-shrink-0 w-80 h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
                 >
                   <img
                     src={image.image_url}
@@ -139,6 +157,20 @@ export default function AboutPage() {
                   />
                 </div>
               ))}
+
+              {/* Left/Right Scroll Arrows */}
+              <button
+                onClick={() => scrollGallery('left')}
+                className="absolute left-2 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white bg-opacity-70 hover:bg-pink-600 hover:text-white transition-opacity opacity-0 group-hover:opacity-100 shadow-lg"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => scrollGallery('right')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white bg-opacity-70 hover:bg-pink-600 hover:text-white transition-opacity opacity-0 group-hover:opacity-100 shadow-lg"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
             </div>
 
             {galleryImages.length === 0 && (
@@ -147,39 +179,54 @@ export default function AboutPage() {
               </div>
             )}
           </div>
+
+          {/* Modal with Navigation */}
+          <AnimatePresence>
+            {modalOpen && galleryImages[selectedIndex] && (
+              <motion.div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <button
+                  onClick={closeModal}
+                  className="absolute top-6 right-6 text-white p-2 rounded-full hover:bg-gray-700 transition"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+
+                <button
+                  onClick={prevImage}
+                  className="absolute left-4 text-white p-2 rounded-full hover:bg-gray-700 transition"
+                >
+                  <ChevronLeft className="w-8 h-8" />
+                </button>
+                <img
+                  src={galleryImages[selectedIndex].image_url}
+                  alt="Gallery enlarged"
+                  className="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl object-contain"
+                />
+                <button
+                  onClick={nextImage}
+                  className="absolute right-4 text-white p-2 rounded-full hover:bg-gray-700 transition"
+                >
+                  <ChevronRight className="w-8 h-8" />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <div className="mt-20 bg-gradient-to-br from-pink-600 to-pink-700 text-white rounded-2xl p-12 text-center">
-          <h2 className="text-4xl font-bold mb-4">Why Choose The Beauty Bar?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <div>
-              <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">✨</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Expert Team</h3>
-              <p className="text-pink-100 text-sm">
-                Highly trained professionals with years of experience in beauty and styling
-              </p>
-            </div>
-            <div>
-              <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">💎</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Premium Products</h3>
-              <p className="text-pink-100 text-sm">
-                We use only the finest, professional-grade products for all our services
-              </p>
-            </div>
-            <div>
-              <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🎯</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Personalized Service</h3>
-              <p className="text-pink-100 text-sm">
-                Tailored treatments and consultations to match your unique style and needs
-              </p>
-            </div>
-          </div>
+        {/* Final Book Appointment CTA */}
+        <div className="mt-16 text-center">
+          <h2 className="text-3xl font-bold text-black mb-6">Ready to Transform Your Look?</h2>
+          <button
+            onClick={() => window.open('https://wa.me/1234567890', '_blank')}
+            className="bg-gradient-to-br from-pink-600 to-pink-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90 transition"
+          >
+            Book Appointment Now
+          </button>
         </div>
       </div>
     </div>
