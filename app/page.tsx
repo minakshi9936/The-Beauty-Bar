@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import HeroSlider from '@/components/HeroSlider';
-import { ChevronLeft, ChevronRight, Users, User, User2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Users, User, User2, UsersIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 // --- Type Definitions ---
 type SliderImage = {
@@ -120,16 +121,19 @@ export default function Home() {
               <Link key={category.id} href={`/category/${category.name.toLowerCase()}`} className="group">
                 <div className="flex flex-col items-center">
                   <motion.div
-                    className="rounded-full w-32 h-32  bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform cursor-pointer hover:bg-pink-200"
+                    className="rounded-full w-32 h-32 bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform cursor-pointer hover:bg-pink-200 overflow-hidden"
                     whileHover={{ rotate: 10 }}
                   >
-                    {category.name === 'Men' ? (
-                      <User className="w-14 h-14 text-blue-500" />
-                    ) : (
-                      <User2 className="w-14 h-14 text-pink-500" />
-                    )}
+                    <Image
+                      src={category.name === 'Men' ? '/men.png' : '/women.png'}
+                      alt={`${category.name} avatar`}
+                      width={128}
+                      height={128}
+                      className="w-full h-full object-cover"
+                    />
                   </motion.div>
                   <span className="mt-2 font-semibold text-gray-800">{category.name}</span>
+                  
                 </div>
               </Link>
             ))}

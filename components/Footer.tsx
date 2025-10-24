@@ -1,17 +1,22 @@
 import Link from 'next/link';
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-white text-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-white font-bold text-lg">
-                BB
-              </div>
-              <span className="text-xl font-bold">The Beauty Bar</span>
+              <Image
+                src="https://res.cloudinary.com/dh9uxczld/image/upload/v1761302651/bblogo_hgimdn.png"
+                alt="The Beauty Bar Logo"
+                width={140}
+                height={140}
+                className="object-cover"
+              />
+              
             </div>
             <p className="text-gray-400 text-sm">
               Your premier destination for beauty and grooming services. Experience luxury and style.
@@ -91,19 +96,19 @@ export default function Footer() {
             <div className="flex space-x-4 mt-4">
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 flex items-center justify-center transition-colors"
+                className="w-10 h-10 rounded-full bg-white hover:bg-pink-600 flex items-center justify-center transition-colors"
               >
                 <Facebook className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 flex items-center justify-center transition-colors"
+                className="w-10 h-10 rounded-full bg-white hover:bg-pink-600 flex items-center justify-center transition-colors"
               >
                 <Instagram className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 flex items-center justify-center transition-colors"
+                className="w-10 h-10 rounded-full bg-white hover:bg-pink-600 flex items-center justify-center transition-colors"
               >
                 <Twitter className="h-5 w-5" />
               </a>

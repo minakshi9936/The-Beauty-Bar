@@ -12,6 +12,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'The Beauty Bar - Premium Salon Services',
   description: 'Your premier destination for beauty and grooming services',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({

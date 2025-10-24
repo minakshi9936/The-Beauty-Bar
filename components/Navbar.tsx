@@ -72,19 +72,17 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-40">
+      <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-40 pt-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center space-x-3">
-              <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg">
-                <Image
-                  src="https://res.cloudinary.com/dlifnml9x/image/upload/v1760617052/logos/logo_1760617052125.jpg"
-                  alt="The Beauty Bar Logo"
-                  width={56}
-                  height={56}
-                  className="object-cover"
-                />
-              </div>
+              <Image
+                src="https://res.cloudinary.com/dh9uxczld/image/upload/v1761302651/bblogo_hgimdn.png"
+                alt="The Beauty Bar Logo"
+                width={100}
+                height={100}
+                className="object-cover"
+              />
             </Link>
 
             <div className="hidden lg:flex items-center space-x-8">
