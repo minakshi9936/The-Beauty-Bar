@@ -162,7 +162,9 @@ export default function ServicesPage() {
                 </div>
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-black mb-2">{service.name}</h3>
-                  <p className="text-gray-600 mb-4">{service.description}</p>
+                  <p className="text-gray-600 mb-4 truncate">
+                    {service.description}
+                  </p>
                   <div className="flex items-center justify-between mb-4">
                     {service.discounted_price ? (
                       <div className="flex items-baseline gap-2">

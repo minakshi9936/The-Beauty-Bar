@@ -28,7 +28,7 @@ export default function ProductDetails() {
   const relatedProducts = productsData.filter((p) => p.id !== product.id).slice(0, 3);
 
   // ✅ WhatsApp link
-  const whatsappNumber = '919876543210';
+  const whatsappNumber = '916391421660';
   const whatsappMessage = encodeURIComponent(
     `Hello! I would like to order the product: ${product.name}.`
   );

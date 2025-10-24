@@ -6,12 +6,12 @@ import { motion } from 'framer-motion';
 import { Star, ArrowLeft, Sparkles, Tag } from 'lucide-react';
 
 const servicesData = [
-  { id: 1, name: 'Haircut', description: 'Stylish haircut tailored to your face shape and preferences. Includes wash, blow dry, and style.', price: 499, duration: '45 mins', rating: 4.7, discount: 15, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/haircut_nddk9k.jpg' },
-  { id: 2, name: 'Facial Glow', description: 'Rejuvenate your skin with our premium glow facial that removes impurities and enhances your natural radiance.', price: 899, duration: '60 mins', rating: 4.9, discount: 20, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/facial_svz4wz.jpg' },
-  { id: 3, name: 'Manicure', description: 'Pamper your hands and nails with our luxury manicure, including exfoliation, massage, and polish.', price: 649, duration: '40 mins', rating: 4.6, discount: 10, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184312/mani_pmfxbe.jpg' },
-  { id: 4, name: 'Makeup', description: 'Professional makeup for weddings, parties, and special events — choose your preferred look.', price: 1499, duration: '90 mins', rating: 4.8, discount: 25, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/bridal_qrnmdn.jpg' },
-  { id: 5, name: 'Massage', description: 'Relaxing full body massage to reduce stress and enhance wellness using aromatic oils.', price: 1299, duration: '75 mins', rating: 5.0, discount: 18, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184309/bodymassage_d9j8u8.jpg' },
-  { id: 6, name: 'Pedicure', description: 'Rejuvenate your feet with a soothing pedicure that includes cleaning, scrubbing, and massage.', price: 699, duration: '50 mins', rating: 4.5, discount: 12, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/foot_w7jfbq.jpg' },
+  { id: 1, name: 'Haircut', description: 'Stylish haircut tailored to your face shape and preferences. Includes wash, blow dry, and style.', price: 499, duration: '45 mins', rating: 4.7, discount: 399, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/haircut_nddk9k.jpg' },
+  { id: 2, name: 'Facial Glow', description: 'Rejuvenate your skin with our premium glow facial that removes impurities and enhances your natural radiance.', price: 899, duration: '60 mins', rating: 4.9, discount: 749, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/facial_svz4wz.jpg' },
+  { id: 3, name: 'Manicure', description: 'Pamper your hands and nails with our luxury manicure, including exfoliation, massage, and polish.', price: 649, duration: '40 mins', rating: 4.6, discount: 549, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184312/mani_pmfxbe.jpg' },
+  { id: 4, name: 'Makeup', description: 'Professional makeup for weddings, parties, and special events — choose your preferred look.', price: 1499, duration: '90 mins', rating: 4.8, discount: 1299, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/bridal_qrnmdn.jpg' },
+  { id: 5, name: 'Massage', description: 'Relaxing full body massage to reduce stress and enhance wellness using aromatic oils.', price: 1299, duration: '75 mins', rating: 5.0, discount: 1099, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184309/bodymassage_d9j8u8.jpg' },
+  { id: 6, name: 'Pedicure', description: 'Rejuvenate your feet with a soothing pedicure that includes cleaning, scrubbing, and massage.', price: 699, duration: '50 mins', rating: 4.5, discount: 599, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/foot_w7jfbq.jpg' },
 ];
 
 export default function ServiceDetails() {
@@ -21,9 +21,7 @@ export default function ServiceDetails() {
   if (!service)
     return <div className="text-center mt-32 text-xl">Service not found</div>;
 
-  const discountedPrice = Math.round(
-    service.price - (service.price * service.discount) / 100
-  );
+  const discountedPrice = service.discount;
 
   const relatedServices = servicesData
     .filter((s) => s.id !== service.id)
@@ -85,7 +83,7 @@ export default function ServiceDetails() {
                 ₹{service.price}
               </span>
               <span className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full font-medium">
-                {service.discount}% OFF
+                {Math.round(((service.price - service.discount) / service.price) * 100)}% OFF
               </span>
             </div>
             <span className="text-gray-500 text-sm bg-gray-100 px-3 py-1 rounded-full mt-3 sm:mt-0">
@@ -107,7 +105,7 @@ export default function ServiceDetails() {
               onClick={() => window.open(whatsappLink, '_blank')}
               className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition font-medium shadow-md"
             >
-              Book Now 
+              Book Now on WhatsApp
             </button>
             <Link
               href="/services"
@@ -178,9 +176,7 @@ export default function ServiceDetails() {
         </h2>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
           {relatedServices.map((item) => {
-            const itemDiscounted = Math.round(
-              item.price - (item.price * item.discount) / 100
-            );
+            const itemDiscounted = item.discount;
             return (
               <Link
                 key={item.id}

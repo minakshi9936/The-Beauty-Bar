@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 // Define types locally
 type Category = {
@@ -17,6 +19,7 @@ type Service = {
   name: string;
   description: string;
   price: number;
+  discount: number;
   image_url: string;
   category_id: string;
   is_active: boolean;
@@ -40,14 +43,14 @@ const categoriesData: Category[] = [
   },
 ];
 
-// Hardcoded services data with category_id
+// Hardcoded services data with category_id and discount
 const servicesData: Service[] = [
-  { id: '1', name: 'Haircut', description: 'Get a stylish, professional haircut tailored to your look.', price: 499, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/haircut_nddk9k.jpg', category_id: '1', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
-  { id: '5', name: 'Massage', description: 'Relax and unwind with our soothing full body massage.', price: 1299, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184309/bodymassage_d9j8u8.jpg', category_id: '1', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
-  { id: '2', name: 'Facial Glow', description: 'Rejuvenate your skin with our premium facial treatments for a glowing look.', price: 899, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/facial_svz4wz.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
-  { id: '3', name: 'Manicure', description: 'Pamper your hands with our luxurious manicure session.', price: 649, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184312/mani_pmfxbe.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
-  { id: '4', name: 'Makeup', description: 'Professional makeup for weddings, parties, or special occasions.', price: 1499, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/bridal_qrnmdn.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
-  { id: '6', name: 'Pedicure', description: 'Get soft, beautiful feet with our rejuvenating pedicure service.', price: 699, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/foot_w7jfbq.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '1', name: 'Haircut', description: 'Get a stylish, professional haircut tailored to your look.', price: 499, discount: 399, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/haircut_nddk9k.jpg', category_id: '1', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '5', name: 'Massage', description: 'Relax and unwind with our soothing full body massage.', price: 1299, discount: 1099, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184309/bodymassage_d9j8u8.jpg', category_id: '1', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '2', name: 'Facial Glow', description: 'Rejuvenate your skin with our premium facial treatments for a glowing look.', price: 899, discount: 749, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/facial_svz4wz.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '3', name: 'Manicure', description: 'Pamper your hands with our luxurious manicure session.', price: 649, discount: 549, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184312/mani_pmfxbe.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '4', name: 'Makeup', description: 'Professional makeup for weddings, parties, or special occasions.', price: 1499, discount: 1299, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/bridal_qrnmdn.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '6', name: 'Pedicure', description: 'Get soft, beautiful feet with our rejuvenating pedicure service.', price: 699, discount: 599, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/foot_w7jfbq.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
 ];
 
 export default function CategoryPage() {
@@ -120,9 +123,13 @@ export default function CategoryPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (
-            <div
+            <motion.div
               key={service.id}
               className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              whileHover={{ scale: 1.02 }}
             >
               <div className="h-56 overflow-hidden">
                 <img
@@ -133,18 +140,24 @@ export default function CategoryPage() {
               </div>
               <div className="p-6">
                 <h3 className="text-2xl font-bold text-black mb-2">{service.name}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-3xl font-bold text-pink-600">₹{service.price}</span>
-                  <Button
-                    onClick={() => window.open('https://wa.me/916391421660', '_blank')}
-                    className="bg-pink-600 hover:bg-pink-700"
-                  >
-                    Book Now
-                  </Button>
+                <p className="text-gray-600 mb-4 truncate">{service.description}</p>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl font-bold text-pink-600">₹{service.discount}</span>
+                    <span className="text-lg text-gray-400 line-through">₹{service.price}</span>
+                  </div>
+                  <Link href={`/service/${service.id}`}>
+                    <Button className="bg-pink-600 hover:bg-pink-700">View</Button>
+                  </Link>
                 </div>
+                <Button
+                  onClick={() => window.open(`https://wa.me/916391421660?text=Hello! I would like to book a ${service.name} service.`, '_blank')}
+                  className="bg-green-500 hover:bg-green-600 w-full"
+                >
+                  Book Now on WhatsApp
+                </Button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

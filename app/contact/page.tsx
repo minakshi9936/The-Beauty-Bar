@@ -59,9 +59,8 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-semibold text-black mb-1">Address</h3>
                   <p className="text-gray-600">
-                    123 Beauty Street, Fashion District
-                    <br />
-                    City, State 12345
+                    The Beauty Bar Salon, Vibhav Khand -4, Vibhav Khand, <br /> Gomti Nagar, Lucknow, Uttar Pradesh 226010
+                    
                   </p>
                 </div>
               </div>
@@ -184,7 +183,7 @@ export default function ContactPage() {
 
       <div className="w-full h-96 bg-gray-300">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093703!2d144.9537353159042!3d-37.81720974201426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sau!4v1620000000000!5m2!1sen!2sau"
+          src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d113897.6029155987!2d80.94083112625836!3d26.86220521529567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x399be3007cd1d95b%3A0xe9f4ba930f375240!2sVibhav%20Khand%20-4%2C%20Vibhav%20Khand%2C%20Gomti%20Nagar%2C%20Lucknow%2C%20Uttar%20Pradesh%20226010!3m2!1d26.8622291!2d81.0232326!5e0!3m2!1sen!2sin!4v1761310930664!5m2!1sen!2sin"
           width="100%"
           height="100%"
           style={{ border: 0 }}
