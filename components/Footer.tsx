@@ -205,7 +205,7 @@ export default function Footer() {
               <li className="flex items-start space-x-2">
                 <MapPin className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
                 <span className="text-gray-400 text-sm">
-                  123 Beauty Street, Fashion District, City, State 12345
+                  The Beauty Bar Salon, Vibhav Khand -4, Vibhav Khand, <br /> Gomti Nagar, Lucknow, Uttar Pradesh 226010
                 </span>
               </li>
               <li className="flex items-center space-x-2">
