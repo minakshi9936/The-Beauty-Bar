@@ -2,8 +2,53 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { supabase, Service, Category } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
+
+// Define types locally
+type Category = {
+  id: string;
+  name: string;
+  image_url: string;
+  created_at: string;
+};
+
+type Service = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image_url: string;
+  category_id: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+// Hardcoded categories data
+const categoriesData: Category[] = [
+  {
+    id: '1',
+    name: 'Men',
+    image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPQPcCiwI-zg16kt4PSI-UQT3wAq1vl1z5Ng&s',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    name: 'Women',
+    image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdxrXoDwjgC2h9IlKod9xe3EzYTbwLSqrz0Q&s',
+    created_at: new Date().toISOString(),
+  },
+];
+
+// Hardcoded services data with category_id
+const servicesData: Service[] = [
+  { id: '1', name: 'Haircut', description: 'Get a stylish, professional haircut tailored to your look.', price: 499, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/haircut_nddk9k.jpg', category_id: '1', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '5', name: 'Massage', description: 'Relax and unwind with our soothing full body massage.', price: 1299, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184309/bodymassage_d9j8u8.jpg', category_id: '1', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '2', name: 'Facial Glow', description: 'Rejuvenate your skin with our premium facial treatments for a glowing look.', price: 899, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184310/facial_svz4wz.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '3', name: 'Manicure', description: 'Pamper your hands with our luxurious manicure session.', price: 649, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184312/mani_pmfxbe.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '4', name: 'Makeup', description: 'Professional makeup for weddings, parties, or special occasions.', price: 1499, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/bridal_qrnmdn.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+  { id: '6', name: 'Pedicure', description: 'Get soft, beautiful feet with our rejuvenating pedicure service.', price: 699, image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760184311/foot_w7jfbq.jpg', category_id: '2', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+];
 
 export default function CategoryPage() {
   const params = useParams();
@@ -11,33 +56,23 @@ export default function CategoryPage() {
   const slug = params.slug as string;
   const [services, setServices] = useState<Service[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories] = useState<Category[]>(categoriesData);
 
   useEffect(() => {
     fetchData();
   }, [slug]);
 
-  const fetchData = async () => {
-    const [categoriesData] = await Promise.all([
-      supabase.from('categories').select('*'),
-    ]);
+  const fetchData = () => {
+    const currentCategory = categoriesData.find(
+      (cat) => cat.name.toLowerCase() === slug.toLowerCase()
+    );
 
-    if (categoriesData.data) {
-      setCategories(categoriesData.data);
-      const currentCategory = categoriesData.data.find(
-        (cat) => cat.name.toLowerCase() === slug.toLowerCase()
+    if (currentCategory) {
+      setCategory(currentCategory);
+      const filteredServices = servicesData.filter(
+        (service) => service.category_id === currentCategory.id && service.is_active
       );
-
-      if (currentCategory) {
-        setCategory(currentCategory);
-        const { data: servicesData } = await supabase
-          .from('services')
-          .select('*')
-          .eq('category_id', currentCategory.id)
-          .eq('is_active', true);
-
-        if (servicesData) setServices(servicesData);
-      }
+      setServices(filteredServices);
     }
   };
 
@@ -101,9 +136,9 @@ export default function CategoryPage() {
                 <h3 className="text-2xl font-bold text-black mb-2">{service.name}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-bold text-pink-600">${service.price}</span>
+                  <span className="text-3xl font-bold text-pink-600">₹{service.price}</span>
                   <Button
-                    onClick={() => window.open('https://wa.me/1234567890', '_blank')}
+                    onClick={() => window.open('https://wa.me/916391421660', '_blank')}
                     className="bg-pink-600 hover:bg-pink-700"
                   >
                     Book Now

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,30 +14,18 @@ export default function ContactPage() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const { error } = await supabase.from('contact_messages').insert([
-        {
-          name,
-          email,
-          message,
-        },
-      ]);
-
-      if (error) throw error;
-
+    // Simulate form submission
+    setTimeout(() => {
       toast.success('Thanks for contacting us! We will get back soon.');
       setName('');
       setEmail('');
       setMessage('');
-    } catch (error) {
-      toast.error('Failed to send message. Please try again.');
-    } finally {
       setLoading(false);
-    }
+    }, 1000);
   };
 
   return (

@@ -1,9 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase, GalleryImage } from '@/lib/supabase';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Define types locally
+type GalleryImage = {
+  id: string;
+  image_url: string;
+  order_index: number;
+  created_at: string;
+};
 
 // Animated Count Component
 const CountUp = ({ end }: { end: number }) => {
@@ -54,13 +61,41 @@ export default function AboutPage() {
     fetchGalleryImages();
   }, []);
 
-  const fetchGalleryImages = async () => {
-    const { data } = await supabase
-      .from('gallery_images')
-      .select('*')
-      .order('order_index');
-
-    if (data) setGalleryImages(data);
+  const fetchGalleryImages = () => {
+    // Hardcoded gallery images
+    const galleryData: GalleryImage[] = [
+      {
+        id: '1',
+        image_url: 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=800',
+        order_index: 1,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: '2',
+        image_url: 'https://images.pexels.com/photos/1570807/pexels-photo-1570807.jpeg?auto=compress&cs=tinysrgb&w=800',
+        order_index: 2,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: '3',
+        image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760689037/Orange_Black_Minimalist_Promotion_Hair_Salon_Instagram_Post_snl7c2.png',
+        order_index: 3,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: '4',
+        image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760689409/Purple_Gradient_Facial_Instagram_Post_fp1f5c.png',
+        order_index: 4,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: '5',
+        image_url: 'https://res.cloudinary.com/dh9uxczld/image/upload/v1760690196/Pink_and_White_Elegant_Nail_Art_Salon_Promotion_Instagram_Post_belkjc.png',
+        order_index: 5,
+        created_at: new Date().toISOString(),
+      },
+    ];
+    setGalleryImages(galleryData);
   };
 
   const scrollGallery = (direction: 'left' | 'right') => {
@@ -222,7 +257,7 @@ export default function AboutPage() {
         <div className="mt-16 text-center">
           <h2 className="text-3xl font-bold text-black mb-6">Ready to Transform Your Look?</h2>
           <button
-            onClick={() => window.open('https://wa.me/1234567890', '_blank')}
+            onClick={() => window.open('https://wa.me/916391421660', '_blank')}
             className="bg-gradient-to-br from-pink-600 to-pink-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90 transition"
           >
             Book Appointment Now
